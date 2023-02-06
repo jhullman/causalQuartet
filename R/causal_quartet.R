@@ -14,8 +14,7 @@
 #' 
 #' 
 
-
-causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, var="random"){   
+causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, varType="random"){   
     #initialize the object
     q_data <- structure(list(), class = "causal_quartet")  
     print(paste("qdata", q_data, sep=" "))
@@ -42,26 +41,19 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
       attr(q_data, "yrange_given") <- TRUE
     }
   
-    if(var=="systematic") {
+    if(varType=="systematic") {
       attr(q_data, "variation") <- "systematic"
-      systematic_quartet(q_data)
-      l <- random_quartet(q_data)
-      attr(q_data, "yrange") <- l$yr
-      q_data$a <- l$y_a_treat
-      q_data$b <- l$y_b_treat
-      q_data$c <- l$y_c_treat
-      q_data$d <- l$y_d_treat
-      
+      l <- systematic_quartet(q_data)
       
     }else{
       attr(q_data, "variation") <- "random"
       l <- random_quartet(q_data)
-      attr(q_data, "yrange") <- l$yr
-      q_data$a <- l$y_a
-      q_data$b <- l$y_b
-      q_data$c <- l$y_c
-      q_data$d <- l$y_d
     }
+    attr(q_data, "yrange") <- l$yr
+    q_data$a <- l$y_a
+    q_data$b <- l$y_b
+    q_data$c <- l$y_c
+    q_data$d <- l$y_d
     
   q_data 
 }
