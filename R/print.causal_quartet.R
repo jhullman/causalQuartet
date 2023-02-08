@@ -1,3 +1,13 @@
+#' Print method for a causal quartet
+#'
+#' @param obj An object of class causal quartet.
+#' @examples
+#' ate <- 0.5
+#' x <- c(100:120)
+#' r <- causal_quartet(ate,x) 
+#' r
+
+
 print.causal_quartet <- function(obj) {
   par(mfrow=c(2,2), mar=c(3,3,2,2), mgp=c(1.7,.5,0), tck=-.01)
   xrange <- attr(obj, "xrange")
