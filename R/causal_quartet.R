@@ -19,7 +19,7 @@
 #' y <- y + rnorm(n=length(y), sd=0.02)
 #' ro <- causal_quartet(ate,x,y,obs="TRUE"))
 #' 
-#' s <- causal_quartet(ate,x,y, obs="TRUE") 
+#' s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
 
 causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, varType="random"){   
     #initialize the object

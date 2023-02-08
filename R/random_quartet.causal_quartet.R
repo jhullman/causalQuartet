@@ -1,3 +1,6 @@
+#' Generate y observations for a random variation causal quartet 
+#' @param obj An object of class causal quartet.
+
 random_quartet.causal_quartet <- function(obj){ 
   x <- attr(obj, "x")
   yrange <- attr(obj, "yrange")
