@@ -23,5 +23,5 @@ x <- 4:14
 y <- rep(0.1, length(x))
 xrange <- c(x[1], x[length(x)])
 yrange <- c(-0.2, 0.2)
-quartet_plot_latent(x, y, xrange, yrange, main="(a)"))
+quartet_plot_latent(x, y, xrange, yrange, main="(a)")
 }

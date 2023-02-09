@@ -11,7 +11,7 @@ causal_quartet(
   yrange = NULL,
   yoffset = 0,
   obs = FALSE,
-  var = "random"
+  varType = "random"
 )
 }
 \arguments{
@@ -31,4 +31,18 @@ causal_quartet(
 }
 \description{
 Generate a causal quartet (constructor function)
+}
+\examples{
+ate <- 0.1 
+x <- c(100:120)
+r <- causal_quartet(ate,x) #generate a latent causal quartet with random variation
+
+yrange <- c(-0.5, 0.5)
+r <- causal_quartet(ate,x,"yrange"=yrange) 
+
+y <- seq(0, 1, by=0.05)
+y <- y + rnorm(n=length(y), sd=0.02)
+ro <- causal_quartet(ate,x,y,obs="TRUE"))
+
+s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
 }
