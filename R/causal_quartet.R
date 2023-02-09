@@ -17,7 +17,7 @@
 #' 
 #' y <- seq(0, 1, by=0.05)
 #' y <- y + rnorm(n=length(y), sd=0.02)
-#' ro <- causal_quartet(ate,x,y,obs="TRUE"))
+#' ro <- causal_quartet(ate,x,y,obs="TRUE")
 #' 
 #' s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
 
