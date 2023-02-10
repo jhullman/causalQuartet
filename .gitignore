@@ -41,3 +41,6 @@ vignettes/*.pdf
 .Renviron
 .Rproj.user
 inst/doc
+
+# Testing files
+testing.Rmd
