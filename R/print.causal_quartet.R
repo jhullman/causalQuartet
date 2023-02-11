@@ -6,6 +6,8 @@
 #' x <- c(100:120)
 #' r <- causal_quartet(ate,x) 
 #' r
+#' @export print.causal_quartet
+#' @export
 
 
 print.causal_quartet <- function(obj) {
