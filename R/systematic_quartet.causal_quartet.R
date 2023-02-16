@@ -26,10 +26,10 @@ systematic_quartet.causal_quartet <- function(obj){
     
     #d
     m <- get_m(ate, x)
-    y_d_offset <- 1/(1 + exp(0.4*(x-mean(x))^2))
+    y_d_treat <- 1/(1 + exp(0.4*(x-mean(x))^2))
     #print(paste("length y_d", length(y_d), sep=" "))
-    y_d_offset <- y_d_offset*ate/mean(y_d_offset)
-    y_d_treat <- y + y_d_offset
+    y_d_treat <- y_d_treat*ate/mean(y_d_treat)
+    y_d_treat <- y + y_d_treat
     #print(paste("length y_d", length(y_d), sep=" "))
     print(paste("y_d_treat", y_d_treat, sep=" "))
     
@@ -37,6 +37,8 @@ systematic_quartet.causal_quartet <- function(obj){
     
     mins <- c(min(y_a_treat),min(y_b_treat),min(y_c_treat),min(y_d_treat),min(y))
     maxs <- c(max(y_a_treat),max(y_b_treat),max(y_c_treat), max(y_d_treat),max(y))
+    yrange <- c(min(mins), max(maxs))
+  
     
   }else{
     #a - linear interaction
