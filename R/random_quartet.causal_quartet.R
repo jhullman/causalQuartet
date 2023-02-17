@@ -13,12 +13,20 @@ random_quartet.causal_quartet <- function(obj){
   print(paste("ate", ate, sep=" "))
   
   if(space == "observables"){
-    y_a_treat <- y + ate
     
+    #a - constant effect
+    y_a_treat <- y + ate
+
+    if(yrange_given && exceeds_bounds(y_a_treat,yrange) ){
+      warning("Input yrange is not compatible with ATE: Overriding provided yrange.")
+      yrange_given <- FALSE
+    }
+    
+    #b, c - low and high random variation
     error <- rnorm(length(x), 0, 2*ate)
     
     if(yrange_given){
-      #find the max variance you can have given the provided y range
+      #find the max variance you can have given the provided y range, use 1/5 for low
       y_c_treat <- y + ate + error
       highvar1 <- (yrange[1] - y[which.min(y_c_treat)] - ate)/error[which.min(y_c_treat)]
       highvar2 <-(yrange[2] - y[which.max(y_c_treat)] - ate)/error[which.max(y_c_treat)]
@@ -27,108 +35,93 @@ random_quartet.causal_quartet <- function(obj){
       y_b_treat <- y + ate + error*lowvar
       y_c_treat <- y + ate + error*highvar
     
-    }else{
-      print("missing y range")  
+    }else{ #don't have to scale the error down
       y_b_treat <- y + ate + error
-      y_c_treat <- y + ate + error*3
-      yrange <- c(floor_dec(y_c_treat[which.min(y_c_treat)], 2), ceiling_dec(y_c_treat[which.max(y_c_treat)], 2))
-      print(paste("yrange", yrange, sep=" "))
+      y_c_treat <- y + ate + error*5
     }
     
-    y_d_offset <- rep(0, length(x))
-    r <- ceiling(length(x)*0.2)
-    indices <- sample(1:length(x), r, replace=FALSE)
-    y_d_offset[indices] <- rep(1, length(indices))
-    y_d_offset <- y_d_offset*ate/mean(y_d_offset)
-    y_d_treat <- y + y_d_offset
-    if(max(y_d_treat) > yrange[2]){
-      y_d_offset <- rep(0, length(x)) #reinitialize y_d
-      r <- floor(length(x)*0.5)
-      indices <- sample(1:length(x), r, replace=FALSE)
-      y_d_offset[indices] <- rep(1, length(indices))
-      y_d_offset <- y_d_offset*ate/mean(y_d_offset)
-      y_d_treat <- y + y_d_offset
-      if(max(y_d_treat) > yrange[2]){
-        if(yrange_given) {
-          stop(paste("Upper bound of provided y range is too low:", yrange[2], "<", max(y_d_treat), sep=" "))
-        }else{
-          yrange[2] <- max(y_d_treat)
-        }
+    #d small proportion non-zero effects
+    p_nonzero <- 0.2
+    y_d_shift <- get_y_d(p_nonzero,ate,x,0)
+    y_d_treat <- y + y_d_shift
+    
+    if(yrange_given){
+      while(p_nonzero < 0.5 && exceeds_bounds(y_d_treat,yrange)){ #while p is less than max allowable 0.5
+        p_nonzero <- p_nonzero + 0.1
+        y_d_shift <- get_y_d(p_nonzero,ate,x,0)
+        y_d_treat <- y+y_d_shift
+      } 
+      if(exceeds_bounds(y_d_treat,yrange)){ #while stops when p_nonzero==0.5 or when y_d no longer exceeds bounds - see which it was
+        warning("Input yrange is not compatible with ATE: Overriding provided yrange.")
+        yrange_given <- FALSE
+        mins <- c(min(y_a_treat),min(y_b_treat),min(y_c_treat), min(y_d_treat))
+        maxs <- c(max(y_a_treat),max(y_b_treat),max(y_c_treat), max(y_d_treat))
+        yrange <- c(min(mins), max(maxs))
       }
-    }
-    if(min(y_d_treat) < yrange[1]) {
-      print("min(y_d_treat) < yrange[1]")
-      if(yrange_given) {
-        stop(paste("Provided y range is not compatible with ATE: lower bound of provided yrange is too high:", yrange[1], ">", min(y_d_treat), sep=" "))
-      }else{
-        yrange[1] <- min(y_d_treat)
-      }
-    }
+    }else{
+      mins <- c(min(y_a_treat),min(y_b_treat),min(y_c_treat), min(y_d_treat))
+      maxs <- c(max(y_a_treat),max(y_b_treat),max(y_c_treat), max(y_d_treat))
+      yrange <- c(min(mins), max(maxs))
+    } #end if yrange given
     
     df <- data.frame(y_a_treat, y_b_treat, y_c_treat, y_d_treat) 
     
-  }else{
+  }else{ #latent
+    #a - constant effect
     y_a <- rep(ate+yoffset, length(x))
+    
+    if(yrange_given && exceeds_bounds(y_a,yrange)){
+      warning("Input yrange is not compatible with ATE: Overriding provided yrange.")
+      yrange_given <- FALSE
+    }
   
+    #b, c - low and high random variation
     error <- lm(rnorm(length(x)) ~ x)$resid
     error <- (error - mean(error))/sd(error)  #standardize for # of sds from mean error
 
     if(yrange_given){
-      #find the max variance you can have given the provided y range
+      #find the max variance you can have given the provided yrange - take 1/5 for low
       y_c <- ate + yoffset + error
       highvar1 <- (yrange[1] - ate - yoffset)/error[which.min(y_c)]
       highvar2 <- (yrange[2] - ate - yoffset)/error[which.max(y_c)]
       highvar <- floor_dec( min(highvar1, highvar2), level=2)
-      lowvar <- highvar*0.2
+      lowvar <- highvar*0.2 #low var is one fifth of high var
       y_b <- ate + yoffset + error*lowvar
       y_c <- ate + yoffset + error*highvar
       
     }else{
-      print("missing y range")  
       y_b <- ate + yoffset + error*0.05
-      print(paste("y_b", y_b, sep=" "))
       y_c <- ate + yoffset + error*0.25
-      yrange <- c(floor_dec(y_c[which.min(y_c)], 2), ceiling_dec(y_c[which.max(y_c)], 2))
-      print(paste("yrange", yrange, sep=" "))
-      
     }
   
-    #d
-    y_d <- rep(yoffset, length(x))
-    #randomly sample 20% 
-    r <- ceiling(length(x)*0.2)
-    indices <- sample(1:length(x), r, replace=FALSE)
-    y_d[indices] <- rep(1, length(indices))
-    y_d <- y_d*(ate)/mean(y_d)
-    if(max(y_d) > yrange[2]){
-      y_d <- rep(yoffset, length(x)) #reinitialize y_d
-      r <- floor(length(x)*0.5)
-      indices <- sample(1:length(x), r, replace=FALSE)
-      y_d[indices] <- rep(1, length(indices))
-      y_d <- y_d*(ate+yoffset)/mean(y_d)
+    #d small proportion non-zero effects
+    #proportion with non-zero effect - default is 0.2
+    p_nonzero <- 0.2
+    y_d <- get_y_d(p_nonzero,ate,x,yoffset)
+    #if yrange provided 
+    if(yrange_given){
+      while(p_nonzero < 0.5 && exceeds_bounds(y_d,yrange)){ #while p is less max allowable 0.5
+        p_nonzero <- p_nonzero + 0.1
+        y_d <- get_y_d(p_nonzero,ate,x,yoffset)
+      } 
+      if(exceeds_bounds(y_d,yrange)){ #while stops when p_nonzero==0.5 or when y_d no longer exceeds bounds - see which it was
+        warning("Input yrange is not compatible with ATE: Overriding provided yrange.")
+        yrange_given <- FALSE
+        mins <- c(min(y_a),min(y_b),min(y_c), min(y_d))
+        maxs <- c(max(y_a),max(y_b),max(y_c), max(y_d))
+        yrange <- c(min(mins), max(maxs))
+      }
+    }else{
+      mins <- c(min(y_a),min(y_b),min(y_c), min(y_d))
+      maxs <- c(max(y_a),max(y_b),max(y_c), max(y_d))
+      yrange <- c(min(mins), max(maxs))
+    } #end if yrange given
     
-      if(max(y_d) > yrange[2]){
-        if(yrange_given) {
-          stop(paste("Upper bound of provided y range is too low:", yrange[2], "<", max(y_d), sep=" "))
-        }else{
-           yrange[2] <- max(y_d)
-        }
-      }
-    }
-    if(min(y_d) < yrange[1]) {
-      if(yrange_given) {
-        stop(paste("Provided y range is not compatible with ATE: lower bound of provided yrange is too high:", yrange[1], ">", min(y_d), sep=" "))
-      }else{
-        yrange[1] <- min(y_d)
-        
-      }
-    }
-   df <- data.frame(y_a, y_b, y_c, y_d)
-  }
+    df <- data.frame(y_a, y_b, y_c, y_d)
+  } #end latent vs observables
+  
   d <- list(yrange, df[,1], df[,2], df[,3], df[,4])
   names(d) <- c("yr", "y_a", "y_b", "y_c", "y_d")
-  print(paste("d$y_a", d$y_a, sep=" "))
-  #print()
   return(d)
 }
 

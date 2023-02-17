@@ -28,6 +28,9 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
     attr(q_data, "ate") <- ate
     attr(q_data, "x") <- x
     attr(q_data, "yoffset") <- yoffset
+    if(yoffset != 0 && obs==TRUE){
+      warning("Provided yoffset cannot be used for an observables plot: Ignoring yoffset.")
+    }
     
     #set xrange
     xrange <- c(x[1], x[length(x)]) 
