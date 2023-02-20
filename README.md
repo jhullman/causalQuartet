@@ -22,6 +22,15 @@ This document provides examples of how to use the package to create quartets of 
 
 ### Latent quartets
 
+To generate a latent quartet for an average treatment effect, provide the estimate and a set of x observations representing individual units.
+
+```{r}
+ate <- 0.21
+
+
+
+```
+
 ### Obervables quartets
 
 
