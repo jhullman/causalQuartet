@@ -18,7 +18,11 @@ devtools::install_github("jhullman/causalQuartet")
 
 ## Overview
 
-This document provides examples of how to use the package. Please refer to the vignettes for
-further details
+This document provides examples of how to use the package to create quartets of latent effects under random or systematic variation, or of observables consistent with latent effects. The minimim information reqired to generate a causal quartet is an average treatment effect and a set of x observations.
 
-[more coming]
+### Latent quartets
+
+### Obervables quartets
+
+
+
