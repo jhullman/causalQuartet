@@ -22,13 +22,14 @@ This document provides examples of how to use the package to create quartets of 
 
 ### Latent quartets
 
-To generate a latent quartet for an average treatment effect, provide the estimate and a set of x observations representing individual units.
+#### Random variation
+To generate a latent quartet depicting patterns of random variation for an average treatment effect, provide the estimate and a set of x observations representing individual units.
 
 ```{r}
 ate <- 0.21
-
-
-
+x <- c(100:120)
+r <- causal_quartet(ate,x)
+r
 ```
 
 ### Obervables quartets
