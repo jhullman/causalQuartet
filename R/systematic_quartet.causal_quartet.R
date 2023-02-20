@@ -1,7 +1,7 @@
 #' Generate y observations for a systematic variation causal quartet
 #' @param obj An object of class causal quartet.
 
-systematic_quartet.causal_quartet <- function(obj){ 
+systematic_quartet.causal_quartet <- function(obj, latent){ 
   x <- attr(obj, "x")
   yrange <- attr(obj, "yrange")
   yrange_given <- attr(obj, "yrange_given")
