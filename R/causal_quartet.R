@@ -5,7 +5,7 @@
 #' @param y A vector. 
 #' @param yrange A vector containing the minimum and maximum x value for the y-axis.
 #' @param yoffset A scalar indicating the baseline effect to compare to. Default=0
-#' @param qType A scalar indicating whether the quartet should show a latent effect ("latent"), observables ("obs") or both ("both"). Default="latent"
+#' @param obs  Boolean indicating whether quartet should show observables. Default=FALSE
 #' @param varType The type of variation (random or systematic) to display. Default="random"
 #' @examples
 #' ate <- 0.1 
@@ -21,10 +21,10 @@
 #' 
 #' s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
 
-causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, qType="latent", varType="random"){   
+causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, varType="random"){   
+#causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, qType="latent", varType="random"){   
     #initialize the object
     q_data <- structure(list(), class = "causal_quartet")  
-    print(paste("qdata", q_data, sep=" "))
     attr(q_data, "ate") <- ate
     attr(q_data, "x") <- x
     attr(q_data, "yoffset") <- yoffset
@@ -48,7 +48,8 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, qType="latent
     #   attr(q_data, "space") <- "latent"
     #}
     
-    if(qType=="obs"){
+    #if(qType=="obs"){
+    if(obs==TRUE){
       attr(q_data, "y") <- y
       attr(q_data, "space") <- "observables"
       
@@ -60,8 +61,9 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, qType="latent
         l <- random_quartet(q_data)
       }
       
-    }else if(qType=="latent"){
-      attr(q_data, "space") <- "latent")
+    }else{ #obs==FALSE  
+    #}else if(qType=="latent"){
+      attr(q_data, "space") <- "latent"
 
       if(varType=="systematic") {
         attr(q_data, "variation") <- "systematic"
@@ -71,29 +73,29 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, qType="latent
         l <- random_quartet(q_data)
       }
 
-    }else{ #both
-      attr(q_data, "y") <- y
+  #  }else{ #both
+  #    attr(q_data, "y") <- y
       
-      if(varType=="systematic") {
+  #    if(varType=="systematic") {
         
-        attr(q_data, "variation") <- "systematic"
+  #      attr(q_data, "variation") <- "systematic"
         #first generate latent
-        attr(q_data, "space") <- "latent"
-        l <- systematic_quartet(q_data)
-        attr(q_data, "space") <- "observables")
-        lo <- systematic_quartet(q_data, l)
-        attr(q_data, "space") <- "both"
+  #      attr(q_data, "space") <- "latent"
+  #      l <- systematic_quartet(q_data)
+  #      attr(q_data, "space") <- "observables"
+  #      lo <- systematic_quartet(q_data, l)
+  #      attr(q_data, "space") <- "both"
         
-      }else{ #random
+  #    }else{ #random
         
-        attr(q_data, "variation") <- "random"
+  #      attr(q_data, "variation") <- "random"
         #first generate latent
-        l <- random_quartet(q_data)
-        attr(q_data, "space") <- "observables")
-        lo <- random_quartet(q_data, l)
-        attr(q_data, "space") <- "both"
+  #      l <- random_quartet(q_data)
+  #      attr(q_data, "space") <- "observables"
+  #      lo <- random_quartet(q_data, l)
+  #      attr(q_data, "space") <- "both"
         
-      }
+  #    }
       
     }
     
@@ -103,12 +105,12 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, qType="latent
     q_data$c <- l$y_c
     q_data$d <- l$y_d
    
-    if(qType=="both"){
-      q_data$a2 <- lo$y_a
-      q_data$b2 <- lo$y_b
-      q_data$c2 <- lo$y_c
-      q_data$d2 <- lo$y_d
-     }
+  #  if(qType=="both"){
+  #    q_data$a2 <- lo$y_a
+  #    q_data$b2 <- lo$y_b
+  #    q_data$c2 <- lo$y_c
+  #    q_data$d2 <- lo$y_d
+  #   }
     
   q_data 
 }
