@@ -5,12 +5,10 @@ random_quartet.causal_quartet <- function(obj){
   x <- attr(obj, "x")
   yrange <- attr(obj, "yrange")
   yrange_given <- attr(obj, "yrange_given")
-  print(paste("yrange", yrange, sep=" "))
   space <- attr(obj, "space")
   ate <- attr(obj, "ate")
   y <- attr(obj, "y")
   yoffset <- attr(obj, "yoffset")
-  print(paste("ate", ate, sep=" "))
   
   if(space == "observables"){
     

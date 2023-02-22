@@ -17,11 +17,17 @@ get_m <- function(ate,x){
 
 #finds y_d for random variation quartet, where some proportion p of observations have constant non-zero effect
 get_y_d <- function(p,ate,x,yoffset){
-  y_d <- rep(yoffset, length(x))
+  y_d <- rep(0, length(x))
   r <- ceiling(length(x)*p)
   indices <- sample(1:length(x), r, replace=FALSE)
   y_d[indices] <- rep(1, length(indices))
-  y_d <- y_d*(ate)/mean(y_d)
+  y_d <- y_d*(ate)/mean(y_d) #works when yoffset = 0
+  if(yoffset!=0){ #if yoffset is not 0, need to adjust all values by now adding offset
+    y_d[-indices] <- rep(yoffset, length(y_d[-indices]))
+    for(k in 1:length(indices)){
+      y_d[indices[k]] <- y_d[indices[k]] + yoffset
+    }
+  }
   return(y_d)
 }
 

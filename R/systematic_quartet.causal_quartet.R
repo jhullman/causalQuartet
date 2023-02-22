@@ -5,13 +5,11 @@ systematic_quartet.causal_quartet <- function(obj){
   x <- attr(obj, "x")
   yrange <- attr(obj, "yrange")
   yrange_given <- attr(obj, "yrange_given")
-  print(paste("yrange", yrange, sep=" "))
   space <- attr(obj, "space")
   ate <- attr(obj, "ate")
   y <- attr(obj, "y")
   yoffset <- attr(obj, "yoffset")
-  print(paste("ate", ate, sep=" "))
-  
+
   if(space == "observables"){
     
     #a - linear interaction
@@ -60,17 +58,21 @@ systematic_quartet.causal_quartet <- function(obj){
    
     df <- data.frame(y_a_treat, y_b_treat, y_c_treat, y_d_treat)
     
-  }else{
+  }else{ #latent
+    
     #a - linear interaction
     y_a <- ate + ate*(x - mean(x))/sd(x)
+    y_a <- y_a + yoffset
     
     #b - no effect than increasing
     y_b <- log(1+exp(2*(x-mean(x))))
     y_b <- y_b*ate/mean(y_b)
+    y_b <- y_b + yoffset
   
     #c - plateau
     y_c <- invlogit(x-mean(x))
     y_c <- y_c*ate/mean(y_c)
+    y_c <- y_c + yoffset
     
     if( yrange_given && exceeds_bounds(c(y_a,y_b,y_c), yrange) ){
       warning("Input yrange is not compatible with ATE: Overriding provided yrange.")
@@ -81,7 +83,7 @@ systematic_quartet.causal_quartet <- function(obj){
     m <- get_m(ate,x)
     y_d <- 1/(1 + exp(m*(x-mean(x))^2))
     y_d <- y_d*ate/mean(y_d)
-    
+    y_d <- y_d + yoffset
 
     if(yrange_given){ 
       if(exceeds_bounds(y_d,yrange)) {
