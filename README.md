@@ -3,7 +3,7 @@ The average treatment effect can often be best understood in the context of its 
 
 To cite: Gelman, A., Hullman, J., & Kennedy, L. (2023). Causal quartets: Different ways to attain the same average treatment effect.
 
-![Alt text](figures/latent_random_quartet.png?raw=true "Title")
+![Alt text](figures/latent_quartets.png?raw=true "Title")
 
 
 ## Installation
@@ -18,7 +18,21 @@ devtools::install_github("jhullman/causalQuartet")
 
 ## Overview
 
-This document provides examples of how to use the package. Please refer to the vignettes for
-further details
+This document provides examples of how to use the package to create quartets of latent effects under random or systematic variation, or of observables consistent with latent effects. The minimim information reqired to generate a causal quartet is an average treatment effect and a set of x observations.
 
-[more coming]
+### Latent quartets
+
+#### Random variation
+To generate a latent quartet depicting patterns of random variation for an average treatment effect, provide the estimate and a set of x observations representing individual units.
+
+```{r}
+ate <- 0.21
+x <- c(100:120)
+r <- causal_quartet(ate,x)
+r
+```
+
+### Obervables quartets
+
+
+
