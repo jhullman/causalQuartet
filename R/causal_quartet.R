@@ -20,6 +20,7 @@
 #' ro <- causal_quartet(ate,x,y,obs="TRUE")
 #' 
 #' s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
+#' @export
 
 causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, varType="random"){   
 #causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, qType="latent", varType="random"){   
