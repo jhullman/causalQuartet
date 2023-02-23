@@ -44,7 +44,7 @@ s
 
 ### Observables quartets
 
-To generate a quartet of hypothetical observables depicting patterns of random variation, include a set of control observations along with the averate treatment effect and x observations:
+To generate a quartet of hypothetical observables depicting patterns of random variation, include a set of control observations along with the average treatment effect and x observations:
 
 #### Random variation
 
@@ -57,6 +57,8 @@ r
 
 
 #### Systematic variation
+
+To generate an observables quartet depicting patterns of systematic variation:
 
 ```{r}
 s <- causal_quartet(ate,x,y,varType="systematic")
