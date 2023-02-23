@@ -23,7 +23,7 @@ This document provides examples of how to use the package to create quartets of 
 ### Latent quartets
 
 #### Random variation
-To generate a latent quartet depicting patterns of random variation for an average treatment effect, provide the estimate and a set of x observations representing individual units.
+To generate a latent quartet depicting patterns of random variation for an average treatment effect, provide the estimate and a set of x observations representing individual units:
 
 ```{r}
 ate <- 0.21
@@ -32,7 +32,34 @@ r <- causal_quartet(ate,x)
 r
 ```
 
-### Obervables quartets
+#### Systematic variation
+
+To generate a latent quartet depicting patterns of systematic variation:
+
+```{r}
+s <- causal_quartet(ate,x,varType="systematic")
+s
+```
 
 
+### Observables quartets
+
+To generate a quartet of hypothetical observables depicting patterns of random variation, include a set of control observations along with the averate treatment effect and x observations:
+
+#### Random variation
+
+```{r}
+y <- seq(0,1,by=0.05)
+y <- y + rnorm(length(y), sd=0.1)
+r <- causal_quartet(ate,x,y,obs=TRUE)
+r
+```
+
+
+#### Systematic variation
+
+```{r}
+s <- causal_quartet(ate,x,y,varType="systematic")
+s
+```
 
