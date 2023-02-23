@@ -1,5 +1,5 @@
 # causalQuartet: A package for generating causal quartets
-The average treatment effect can often be best understood in the context of its variation. <a href="http://users.eecs.northwestern.edu/~jhullman/Causal_quartets.pdf">Causal quartets</a> depict the same average treatment effect under different patterns of heterogeneity. As with the famous correlation quartet of Anscombe (1973), causal quartets dramatize the way in which real-world variation can be more complex than simple numerical summaries.
+The average treatment effect can often be best understood in the context of its variation. <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/causal_quartets.pdf">Causal quartets</a> depict the same average treatment effect under different patterns of heterogeneity. As with the famous correlation quartet of Anscombe (1973), causal quartets dramatize the way in which real-world variation can be more complex than simple numerical summaries.
 
 To cite: Gelman, A., Hullman, J., & Kennedy, L. (2023). Causal quartets: Different ways to attain the same average treatment effect.
 
