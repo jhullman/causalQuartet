@@ -31,7 +31,7 @@ x <- c(100:120)
 r <- causal_quartet(ate,x)
 r
 ```
-![Alt text](figures/latent_random_ate0.21_x100:120.png?raw=true "Title")
+![Alt text](figures/latent_random_ate0.21_x100:120.png?raw=true "Latent quartet with systematic variation")
 
 #### Systematic variation
 
@@ -41,15 +41,23 @@ To generate a latent quartet depicting patterns of systematic variation:
 s <- causal_quartet(ate,x,varType="systematic")
 s
 ```
-![Alt text](figures/latent_systematic_ate0.21_x100:120.png?raw=true "Title")
+![Alt text](figures/latent_systematic_ate0.21_x100:120.png?raw=true "Latent quartet with systematic variation")
 
 Customize the y-axis range:
 
 ```{r}
-s <- causal_quartet(ate,x,y,varType="systematic",yrange=c(-0.5,1)
+s <- causal_quartet(ate,x,y,varType="systematic",yrange=c(-0.5,1))
 s
 ```
-![Alt text](figures/latent_systematic_ate0.21_x100:120_yrange.png?raw=true "Title")
+![Alt text](figures/latent_systematic_ate0.21_x100:120_yrange.png?raw=true "Latent quartet with systematic variation and custom yrange")
+
+Change the baseline y value against which effects are compared from the default of 0 to another value:
+
+```{r}
+s <- causal_quartet(ate,x,y,varType="systematic",yoffset=4,yrange=c(2,6))
+s
+```
+![Alt text](figures/latent_systematic_ate0.21_x100:120_yoffset4_yrange.png?raw=true "Latent quartet with systematic variation and custom yoffset and yrange")
 
 
 
