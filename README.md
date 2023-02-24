@@ -3,7 +3,7 @@ The average treatment effect can often be best understood in the context of its 
 
 To cite: Gelman, A., Hullman, J., & Kennedy, L. (2023). Causal quartets: Different ways to attain the same average treatment effect.
 
-![Alt text](figures/latent_quartets.png?raw=true "Title")
+![Alt text](figures/latent_quartets.png?raw=true "Latent quartets with random (left) and systematic (right) variation")
 
 
 ## Installation
