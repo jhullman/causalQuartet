@@ -51,7 +51,11 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
     
     #if(qType=="obs"){
     if(obs==TRUE){
+      if(missing(y)){
+        stop("Missing y argument: Must provide control y observations for observables quartet.")
+      }
       attr(q_data, "y") <- y
+     
       attr(q_data, "space") <- "observables"
       
       if(varType=="systematic") {
@@ -101,6 +105,8 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
     }
     
     attr(q_data, "yrange") <- l$yr
+    q_data$x <- l$x
+    q_data$y <- l$y
     q_data$a <- l$y_a
     q_data$b <- l$y_b
     q_data$c <- l$y_c
