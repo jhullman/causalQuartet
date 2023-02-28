@@ -88,10 +88,27 @@ so
 
 ### Extract data from a quartet
 
-You can extract the data from a causal quartet object (for example, to plot the quartets using a preferred graphics package):
+You can extract the data from a causal quartet object, for example, to plot the quartets using a preferred graphics package:
 
 ```{r}
+library(tidyverse)
 ro <- causal_quartet(ate,x,y,obs=TRUE)
-cq_data <- data.frame(ro$x, ro$y, ro$a, ro$b, ro$c, ro$d)
-```
+attach(ro)
+cq <- as.tibble(data.frame(x, y, a, b, c, d))
 
+
+#plot data using ggplot2 and cowplot
+library(ggplot2)
+library(cowplot)
+
+cq <- rename(cq, control=y)
+long_cq <- cq %>% gather(group, treatment, a:d)  %>% gather(cond, value, c("control", "treatment"))
+
+pa <- long_cq %>% filter(group == "a") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+pb <- long_cq %>% filter(group == "b") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+pc <- long_cq %>% filter(group == "c") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+pd <- long_cq %>% filter(group == "d") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+  
+plot_grid(pa, pb, pc, pd, labels = "auto")
+```
+![Alt text](figures/ggplot_quartet.png?raw=true "Causal quartet generated with ggplot2 and cowplot")
