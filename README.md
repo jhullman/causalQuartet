@@ -85,3 +85,13 @@ so
 ```
 
 ![Alt text](figures/observables_systematic_ate21_x100-120.png?raw=true "Observables quartet with systematic variation")
+
+### Extract data from a quartet
+
+You can extract the data from a causal quartet object (for example, to plot the quartets using a preferred graphics package):
+
+```{r}
+ro <- causal_quartet(ate,x,y,obs=TRUE)
+cq_data <- data.frame(ro$x, ro$y, ro$a, ro$b, ro$c, ro$d)
+```
+
