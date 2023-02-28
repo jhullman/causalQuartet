@@ -25,7 +25,7 @@ causal_quartet(
 
 \item{yoffset}{A scalar indicating the baseline effect to compare to. Default=0}
 
-\item{obs}{An indicator of whether observables should be shown. Default=FALSE}
+\item{obs}{Boolean indicating whether quartet should show observables. Default=FALSE}
 
 \item{varType}{The type of variation (random or systematic) to display. Default="random"}
 }
@@ -42,7 +42,7 @@ r <- causal_quartet(ate,x,"yrange"=yrange)
 
 y <- seq(0, 1, by=0.05)
 y <- y + rnorm(n=length(y), sd=0.02)
-ro <- causal_quartet(ate,x,y,obs="TRUE"))
+ro <- causal_quartet(ate,x,y,obs="TRUE")
 
 s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
 }

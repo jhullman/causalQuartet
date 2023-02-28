@@ -62,7 +62,7 @@ random_quartet.causal_quartet <- function(obj){
       yrange <- c(min(mins), max(maxs))
     } #end if yrange given
     
-    df <- data.frame(y_a_treat, y_b_treat, y_c_treat, y_d_treat) 
+    df <- data.frame(x, y, y_a_treat, y_b_treat, y_c_treat, y_d_treat) 
     
   }else{ #latent
     #a - constant effect
@@ -115,11 +115,12 @@ random_quartet.causal_quartet <- function(obj){
       yrange <- c(min(mins), max(maxs))
     } #end if yrange given
     
-    df <- data.frame(y_a, y_b, y_c, y_d)
+    y <- rep("NA", length(x))
+    df <- data.frame(x, y, y_a, y_b, y_c, y_d)
   } #end latent vs observables
   
-  d <- list(yrange, df[,1], df[,2], df[,3], df[,4])
-  names(d) <- c("yr", "y_a", "y_b", "y_c", "y_d")
+  d <- list(yrange, df[,1], df[,2], df[,3], df[,4], df[,5], df[,6])
+  names(d) <- c("yr", "x", "y", "y_a", "y_b", "y_c", "y_d")
   return(d)
 }
 
