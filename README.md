@@ -103,11 +103,12 @@ library(cowplot)
 
 cq <- rename(cq, control=y)
 long_cq <- cq %>% gather(group, treatment, a:d)  %>% gather(cond, value, c("control", "treatment"))
+yr <- attr(ro, "yrange")
 
-pa <- long_cq %>% filter(group == "a") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
-pb <- long_cq %>% filter(group == "b") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
-pc <- long_cq %>% filter(group == "c") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
-pd <- long_cq %>% filter(group == "d") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+pa <- long_cq %>% filter(group == "a") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + ylim(yr[1], yr[2]) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+pb <- long_cq %>% filter(group == "b") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + ylim(yr[1], yr[2]) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+pc <- long_cq %>% filter(group == "c") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + ylim(yr[1], yr[2]) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
+pd <- long_cq %>% filter(group == "d") %>% ggplot(., aes(x = x, y = value, color = cond)) + geom_point(alpha = 0.5, size=2) + ylim(yr[1], yr[2]) + labs(y = "Outcome", color = "condition") + theme_classic() + theme(line = element_blank(), legend.position="none") 
   
 plot_grid(pa, pb, pc, pd, labels = "auto")
 ```
