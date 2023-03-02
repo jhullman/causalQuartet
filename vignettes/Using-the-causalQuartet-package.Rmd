@@ -20,10 +20,6 @@ The Causal Quartets package is designed to be used alongside the manuscript *Cau
 library(causalQuartet)
 ```
 
-# Replicating Figures 1 and 2
-
-
-# Replicating Figures 3 and 4
-
+# Replicating the manuscript figures
 
 # Using the causalQuartet package to explore potential effects
