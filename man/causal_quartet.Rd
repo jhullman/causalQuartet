@@ -2,7 +2,7 @@
 % Please edit documentation in R/causal_quartet.R
 \name{causal_quartet}
 \alias{causal_quartet}
-\title{Generate a causal quartet (constructor function)}
+\title{Generate a causal quartet}
 \usage{
 causal_quartet(
   ate,
@@ -15,13 +15,13 @@ causal_quartet(
 )
 }
 \arguments{
-\item{ate}{A scalar.}
+\item{ate}{A scalar}
 
-\item{x}{A vector.}
+\item{x}{A vector}
 
-\item{y}{A vector.}
+\item{y}{A vector}
 
-\item{yrange}{A vector containing the minimum and maximum x value for the y-axis.}
+\item{yrange}{A vector containing the minimum and maximum x value for the y-axis}
 
 \item{yoffset}{A scalar indicating the baseline effect to compare to. Default=0}
 
@@ -29,8 +29,29 @@ causal_quartet(
 
 \item{varType}{The type of variation (random or systematic) to display. Default="random"}
 }
+\value{
+A list object of class causal_quartet. The object has the following elements:
+\itemize{
+\item{"x"}{ Contains user-provided x observations}
+\item{"y"}{ Contains user-provided control y observations for an observables quartet}
+\item{"a"}{ Contains y values for subplot a. If an observables quartet, these are y values for the treatment condition}
+\item{"b"}{ Contains y values for subplot b. If an observables quartet, these are y values for the treatment condition}
+\item{"c"}{ Contains y values for subplot c. If an observables quartet, these are y values for the treatment condition}
+\item{"d"}{ Contains y values for subplot d. If an observables quartet, these are y values for the treatment condition}
+}
+The object has the following attributes:
+\itemize{
+\item{"ate"}{ The user-provided average treatment effect}
+\item{"yoffset"}{ The baseline y value indicating no effect in a latent quartet}
+\item{"xrange"}{ The x-axis range (min and max)}
+\item{"yrange"}{ The y-axis range (min and max)}
+\item{"yrange_given"}{ Indicates whether the user specified a y-axis range}
+\item{"space"}{ Whether the quartet plots latent effects (latent) or hypothetical observables (observables)}
+\item{"variation"}{ Whether the variation is random or systematic}
+}
+}
 \description{
-Generate a causal quartet (constructor function)
+Generate a causal quartet
 }
 \examples{
 ate <- 0.1 
