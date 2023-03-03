@@ -1,0 +1,127 @@
+---
+title: "Using the causalQuartet package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using-the-causalQuartet-package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The Causal Quartets package is designed to be used alongside the manuscript *Causal quartets: Different ways to attain the same average treatment effect.* Gelman, Hullman and Kennedy(2023). In this vignette we will detail how to use the package to produce the quartets displayed in the manuscript, and some potential exploration that could be achieved with it.
+
+```{r setup}
+library(causalQuartet)
+```
+
+## Replicating the manuscript figures
+
+The data used to create the figures in the manuscript are included as documented datasets within this package. We demonstrate how to reproduce these figures using these datasets in this section:
+
+### Creating the latent quartet plots
+
+We use a small helper function to directly recreate the plots. When creating/using alternative datasets, this is included in the functionality of the package so it is not needed beyond recreating our publications plots. 
+```{r}
+quartet_plot <- function(x, y, ...){
+  plot(x, y, ylab="Causal effect", type="n", bty="l", xlim=c(3,15), ylim=c(-0.5, 0.6), ...)
+  abline(0,0,col="gray")
+  points(x, y, pch=20, col="blue")
+}
+```
+
+The first quartet is called `quartet1` and included in the namespace so it can be used without any additional work. 
+
+```{r, fig.width=6}
+par(mfrow=c(2,2), mar=c(3,3,2,2), mgp=c(1.7,.5,0), tck=-.01)
+
+quartet_plot(x = quartet1$x, y = quartet1$a, main="(a)                                                                 ")
+quartet_plot(x = quartet1$x, y = quartet1$b, main="(b)                                                                 ")
+quartet_plot(x = quartet1$x, y = quartet1$c, main="(c)                                                                 ")
+quartet_plot(x = quartet1$x, y = quartet1$d, main="(d)                                                                 ")
+```
+
+The second quartet is called `quartet2` and also included in the namespace.
+
+```{r, fig.width=6}
+par(mfrow=c(2,2), mar=c(3,3,2,2), mgp=c(1.7,.5,0), tck=-.01)
+
+quartet_plot(x = quartet2$x, y = quartet2$a, main="(a)                                                                 ")
+quartet_plot(x = quartet2$x, y = quartet2$b, main="(b)                                                                 ")
+quartet_plot(x = quartet2$x, y = quartet2$c, main="(c)                                                                 ")
+quartet_plot(x = quartet2$x, y = quartet2$d, main="(d)                                                                 ")
+```
+
+### Creating the observed data plots 
+
+Similar to the first two plots, the third plot is created using a small helper function. Our package will automatically create these plots for you, so this is just to demonstrate how to replicate the plots in the manuscript. 
+
+
+```{r}
+quartet_plot_obs <- function(x, y_control, y_treat,...){
+  plot(x, y_control, ylab="Observed data", type="n", bty="l", xlim=c(3,15), ylim=c(-.05,.95),yaxp = c(0, .8, 2),...)
+  points(x, y_control, pch=1, col="blue", cex = 1)
+  points(x, y_treat, pch=4, col="blue", cex = .75)
+}
+```
+
+The third figure contains both quartets, but the two observed quartet datasets are names `quartet1_obs` and `quartet2_obs` to correspond to `quartet1` and `quartet2`. We make each quartet separately. 
+
+```{r, fig.width=6}
+par(mfrow=c(2,2), mar=c(3,3,2,2), mgp=c(1.7,.5,0), tck=-.01)
+quartet_plot_obs(quartet1_obs$x, quartet1_obs$y, quartet1_obs$a, main="(a)                                                                 ")
+quartet_plot_obs(quartet1_obs$x, quartet1_obs$y, quartet1_obs$b, main="(b)                                                                 ")
+quartet_plot_obs(quartet1_obs$x, quartet1_obs$y, quartet1_obs$c, main="(c)                                                                 ")
+quartet_plot_obs(quartet1_obs$x, quartet1_obs$y, quartet1_obs$d, main="(d)                                                                 ")
+
+```
+
+And for the second quartet
+
+```{r, fig.width=6}
+par(mfrow=c(2,2), mar=c(3,3,2,2), mgp=c(1.7,.5,0), tck=-.01)
+quartet_plot_obs(quartet2_obs$x, quartet2_obs$y, quartet2_obs$e, main="(e)                                                                 ")
+quartet_plot_obs(quartet2_obs$x, quartet2_obs$y, quartet2_obs$f, main="(f)                                                                 ")
+quartet_plot_obs(quartet2_obs$x, quartet2_obs$y, quartet2_obs$g, main="(g)                                                                 ")
+quartet_plot_obs(quartet2_obs$x, quartet2_obs$y, quartet2_obs$h, main="(h)                                                                 ")
+
+```
+
+## Using the causalQuartet package to explore potential effects
+
+Of course, one example of the dataset can only be so illustrative. This packages contains functions to create datasets that have similar patterns to the manuscript data. We imagine this will be useful exploring the variation on these themes, and how changes in the parameters will impact the visual appearance of these quartets. 
+
+For example, considering the random variation of the latent quartets, we might explore the difference between a small ATE
+
+```{r, fig.width=6}
+ate <- 0.21
+x <- c(100:120)
+r <- causal_quartet(ate,x)
+r
+```
+
+and a large ATE on the visualised relationship with the intended noise. Or you might choose to run the above chunk of code several times over to understand the random variation possible. 
+
+```{r, fig.width=6}
+ate <- 5
+x <- c(100:120)
+r <- causal_quartet(ate,x)
+r
+```
+
+Of course, rarely do we have the opportunity to see the true latent treatment effect. Instead we might wish to visualise what we observe, typically the outcome for a control and treatment group. In our manuscript and our paper, we assume that there is some underlying relationship between x and y. This seemed a reasonable assumption given the treatment effect changes based on x. 
+
+Here we plot the systematic effect for treated (x) and control (o) for the second quartet given an existing x/y relationship. Although the four quartets are visually distinct when looking at the latent effect, when we look at the observed effect, it appears noisier and more difficult to differentiate. 
+
+```{r, fig.width=6}
+ate = 0.1
+y <- seq(0,1,by=0.05)
+y <- y + rnorm(length(y), sd=0.1)
+causal_quartet(ate,x,y,varType="systematic",obs=TRUE)
+```
+
