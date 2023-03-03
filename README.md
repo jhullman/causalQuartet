@@ -26,12 +26,12 @@ This document provides examples of how to use the package to create quartets of 
 To generate a latent quartet depicting patterns of random variation for an average treatment effect, provide the estimate and a set of x observations representing individual units:
 
 ```{r}
-ate <- 0.21
+ate <- 0.1
 x <- c(100:120)
 r <- causal_quartet(ate,x)
 r
 ```
-![Alt text](figures/latent_random_ate21_x100-120.png?raw=true "Latent quartet with systematic variation")
+![Alt text](figures/latent_random_ate01_x100-120.png?raw=true "Latent quartet with systematic variation")
 
 #### Systematic variation
 
@@ -41,7 +41,7 @@ To generate a latent quartet depicting patterns of systematic variation:
 s <- causal_quartet(ate,x,varType="systematic")
 s
 ```
-![Alt text](figures/latent_systematic_ate21_x100-120.png?raw=true "Latent quartet with systematic variation")
+![Alt text](figures/latent_systematic_ate01_x100-120.png?raw=true "Latent quartet with systematic variation")
 
 Customize the y-axis range:
 
@@ -49,7 +49,7 @@ Customize the y-axis range:
 s <- causal_quartet(ate,x,varType="systematic",yrange=c(-0.5,1))
 s
 ```
-![Alt text](figures/latent_systematic_ate21_x100-120_yrange.png?raw=true "Latent quartet with systematic variation and custom yrange")
+![Alt text](figures/latent_systematic_ate01_x100-120_yrange.png?raw=true "Latent quartet with systematic variation and custom yrange")
 
 Change the baseline y value against which effects are compared from the default of 0 to another value:
 
@@ -57,7 +57,7 @@ Change the baseline y value against which effects are compared from the default 
 s <- causal_quartet(ate,x,varType="systematic",yoffset=4,yrange=c(2,6))
 s
 ```
-![Alt text](figures/latent_systematic_ate21_x100-120_yoffset4_yrange.png?raw=true "Latent quartet with systematic variation and custom yoffset and yrange")
+![Alt text](figures/latent_systematic_ate01_x100-120_yoffset4_yrange.png?raw=true "Latent quartet with systematic variation and custom yoffset and yrange")
 
 
 
@@ -73,7 +73,7 @@ y <- y + rnorm(length(y), sd=0.1)
 ro <- causal_quartet(ate,x,y,obs=TRUE)
 ro
 ```
-![Alt text](figures/observables_random_ate21_x100-120.png?raw=true "Observables quartet with random variation")
+![Alt text](figures/observables_random_ate01_x100-120.png?raw=true "Observables quartet with random variation")
 
 #### Systematic variation
 
@@ -84,7 +84,7 @@ so <- causal_quartet(ate,x,y,varType="systematic",obs=TRUE)
 so
 ```
 
-![Alt text](figures/observables_systematic_ate21_x100-120.png?raw=true "Observables quartet with systematic variation")
+![Alt text](figures/observables_systematic_ate01_x100-120.png?raw=true "Observables quartet with systematic variation")
 
 ### Extract data from a quartet
 
