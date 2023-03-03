@@ -24,7 +24,7 @@ library(causalQuartet)
 
 The data used to create the figures in the manuscript are included as documented datasets within this package. We demonstrate how to reproduce these figures using these datasets in this section:
 
-### Creating the treatment effect plots
+### Creating the latent quartet plots
 
 We use a small helper function to directly recreate the plots. When creating/using alternative datasets, this is included in the functionality of the package so it is not needed beyond recreating our publications plots. 
 ```{r}
@@ -94,5 +94,34 @@ quartet_plot_obs(quartet2_obs$x, quartet2_obs$y, quartet2_obs$h, main="(h)      
 
 ## Using the causalQuartet package to explore potential effects
 
+Of course, one example of the dataset can only be so illustrative. This packages contains functions to create datasets that have similar patterns to the manuscript data. We imagine this will be useful exploring the variation on these themes, and how changes in the parameters will impact the visual appearance of these quartets. 
 
+For example, considering the random variation of the latent quartets, we might explore the difference between a small ATE
+
+```{r, fig.width=6}
+ate <- 0.21
+x <- c(100:120)
+r <- causal_quartet(ate,x)
+r
+```
+
+and a large ATE on the visualised relationship with the intended noise. Or you might choose to run the above chunk of code several times over to understand the random variation possible. 
+
+```{r, fig.width=6}
+ate <- 5
+x <- c(100:120)
+r <- causal_quartet(ate,x)
+r
+```
+
+Of course, rarely do we have the opportunity to see the true latent treatment effect. Instead we might wish to visualise what we observe, typically the outcome for a control and treatment group. In our manuscript and our paper, we assume that there is some underlying relationship between x and y. This seemed a reasonable assumption given the treatment effect changes based on x. 
+
+Here we plot the systematic effect for treated (x) and control (o) for the second quartet given an existing x/y relationship. Although the four quartets are visually distinct when looking at the latent effect, when we look at the observed effect, it appears noisier and more difficult to differentiate. 
+
+```{r, fig.width=6}
+ate = 0.1
+y <- seq(0,1,by=0.05)
+y <- y + rnorm(length(y), sd=0.1)
+causal_quartet(ate,x,y,varType="systematic",obs=TRUE)
+```
 
