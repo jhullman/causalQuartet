@@ -11,7 +11,8 @@ causal_quartet(
   yrange = NULL,
   yoffset = 0,
   obs = FALSE,
-  varType = "random"
+  vartype = "random",
+  matchlq = NULL
 )
 }
 \arguments{
@@ -21,13 +22,15 @@ causal_quartet(
 
 \item{y}{A vector}
 
-\item{yrange}{A vector containing the minimum and maximum x value for the y-axis}
+\item{yrange}{A vector containing the minimum and maximum x value for the y-axis. Default=NULL}
 
 \item{yoffset}{A scalar indicating the baseline effect to compare to. Default=0}
 
 \item{obs}{Boolean indicating whether quartet should show observables. Default=FALSE}
 
-\item{varType}{The type of variation (random or systematic) to display. Default="random"}
+\item{vartype}{The type of variation (random or systematic) to display. Default="random"}
+
+\item{matchlq}{A causal quartet object a latent quartet, for use in generating a corresponding observables quartet. Default=NULL}
 }
 \value{
 A list object of class causal_quartet. The object has the following elements:
@@ -65,5 +68,5 @@ y <- seq(0, 1, by=0.05)
 y <- y + rnorm(n=length(y), sd=0.02)
 ro <- causal_quartet(ate,x,y,obs="TRUE")
 
-s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
+s <- causal_quartet(ate,x,y,obs="TRUE", vartype="systematic") 
 }

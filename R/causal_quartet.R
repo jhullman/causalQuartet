@@ -3,10 +3,11 @@
 #' @param ate A scalar
 #' @param x A vector
 #' @param y A vector 
-#' @param yrange A vector containing the minimum and maximum x value for the y-axis
+#' @param yrange A vector containing the minimum and maximum x value for the y-axis. Default=NULL
 #' @param yoffset A scalar indicating the baseline effect to compare to. Default=0
 #' @param obs  Boolean indicating whether quartet should show observables. Default=FALSE
-#' @param varType The type of variation (random or systematic) to display. Default="random"
+#' @param vartype The type of variation (random or systematic) to display. Default="random"
+#' @param matchlq A causal quartet object a latent quartet, for use in generating a corresponding observables quartet. Default=NULL
 #' @returns 
 #' A list object of class causal_quartet. The object has the following elements:
 #' \itemize{
@@ -39,10 +40,11 @@
 #' y <- y + rnorm(n=length(y), sd=0.02)
 #' ro <- causal_quartet(ate,x,y,obs="TRUE")
 #' 
-#' s <- causal_quartet(ate,x,y,obs="TRUE", varType="systematic") 
+#' s <- causal_quartet(ate,x,y,obs="TRUE", vartype="systematic") 
 #' @export
 
-causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, varType="random"){   
+causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, vartype="random", matchlq=NULL){   
+  
     #initialize the object
     q_data <- structure(list(), class = "causal_quartet")  
     attr(q_data, "ate") <- ate
@@ -50,6 +52,17 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
     attr(q_data, "yoffset") <- yoffset
     if(yoffset != 0 && obs==TRUE){
       warning("Provided yoffset cannot be used for an observables plot: Ignoring yoffset.")
+    }
+    
+    if(!missing(matchlq)){
+      if(obs==FALSE){
+        warning("Cannot provide a latent quartet to match unless generating an observables quartet. Ignoring matchlq.")
+      }else{
+        attr(q_data, "matchlq_given") <- TRUE
+        q_data$l_b <- matchlq$b
+        q_data$l_c <- matchlq$c
+        q_data$l_d <- matchlq$d
+      }
     }
     
     #set xrange
@@ -65,16 +78,14 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
     }
     
     
-    #if(qType=="obs"){
     if(obs==TRUE){
       if(missing(y)){
         stop("Missing y argument: Must provide control y observations for observables quartet.")
       }
       attr(q_data, "y") <- y
-     
       attr(q_data, "space") <- "observables"
       
-      if(varType=="systematic") {
+      if(vartype=="systematic") {
         attr(q_data, "variation") <- "systematic"
         l <- systematic_quartet(q_data)
       }else{ #random
@@ -83,11 +94,15 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
       }
       #remove y attribute since y obs now contained in l
       attr(q_data, "y") <- NULL
+      #remove the matching latent quartet info in case one was provided
+      l$l_b <- NULL
+      l$l_c <- NULL
+      l$l_d <- NULL
       
     }else{ #obs==FALSE  
       attr(q_data, "space") <- "latent"
 
-      if(varType=="systematic") {
+      if(vartype=="systematic") {
         attr(q_data, "variation") <- "systematic"
         l <- systematic_quartet(q_data)
       }else{ #random
