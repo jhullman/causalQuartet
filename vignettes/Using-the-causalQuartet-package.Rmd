@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The Causal Quartets package is designed to be used alongside the manuscript *Causal quartets: Different ways to attain the same average treatment effect.* Gelman, Hullman and Kennedy(2023). In this vignette we will detail how to use the package to produce the quartets displayed in the manuscript, and some potential exploration that could be achieved with it.
+The Causal Quartets package is designed to be used alongside the manuscript *Causal quartets: Different ways to attain the same average treatment effect.* Gelman, Hullman and Kennedy(2023), in order to explore what different average treatment effects might look like at the level of units. In this vignette we will detail how to use the package to reproduce the quartets displayed in the manuscript. We then demonstrate some potential exploration that could be achieved with it. 
 
 ```{r setup}
 library(causalQuartet)
