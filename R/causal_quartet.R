@@ -50,6 +50,7 @@ causal_quartet <- function(ate, x, y=NULL, yrange=NULL, yoffset=0, obs=FALSE, va
     attr(q_data, "ate") <- ate
     attr(q_data, "x") <- x
     attr(q_data, "yoffset") <- yoffset
+    attr(q_data, "matchlq_given") <- FALSE
     if(yoffset != 0 && obs==TRUE){
       warning("Provided yoffset cannot be used for an observables plot: Ignoring yoffset.")
     }

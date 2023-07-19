@@ -22,7 +22,7 @@ random_quartet.causal_quartet <- function(obj){
     }
     
     if(matchlq_given){ #if they input a latent quartet, use b, c, and d series
-      
+  
       y_b_treat <- y + obj$l_b
       y_c_treat <- y + obj$l_c
       y_d_treat <- y + obj$l_d
