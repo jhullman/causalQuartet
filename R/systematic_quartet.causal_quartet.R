@@ -10,7 +10,6 @@ systematic_quartet.causal_quartet <- function(obj){
   y <- attr(obj, "y")
   yoffset <- attr(obj, "yoffset")
   matchlq_given <- attr(obj, "matchlq_given")
-  print(paste("matchlq_given", matchlq_given, sep=" "))
 
   if(space == "observables"){
     

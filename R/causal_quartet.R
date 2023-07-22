@@ -7,7 +7,7 @@
 #' @param yoffset A scalar indicating the baseline effect to compare to. Default=0
 #' @param obs  Boolean indicating whether quartet should show observables. Default=FALSE
 #' @param vartype The type of variation (random or systematic) to display. Default="random"
-#' @param matchlq A causal quartet object a latent quartet, for use in generating a corresponding observables quartet. Default=NULL
+#' @param matchlq A latent quartet causal quartet object, for use in generating a corresponding observables quartet. Default=NULL
 #' @returns 
 #' A list object of class causal_quartet. The object has the following elements:
 #' \itemize{
