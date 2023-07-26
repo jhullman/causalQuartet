@@ -122,6 +122,6 @@ Here we plot the systematic effect for treated (x) and control (o) for the secon
 ate = 0.1
 y <- seq(0,1,by=0.05)
 y <- y + rnorm(length(y), sd=0.1)
-causal_quartet(ate,x,y,varType="systematic",obs=TRUE)
+causal_quartet(ate,x,y,vartype="systematic",obs=TRUE)
 ```
 
